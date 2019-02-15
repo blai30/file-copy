@@ -1,8 +1,8 @@
 # CSC 415 - Project 2 - File copy
 
-## Student Name : Name here
+## Student Name : Brian Lai
 
-## Student ID   : ID here
+## Student ID   : 916818167
 
 ## Build Instructions
 

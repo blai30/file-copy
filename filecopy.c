@@ -15,6 +15,12 @@
 
 
 int main(int argc, char const *argv[]) {
+    char filename[128];
+
+    printf("Welcome to the File Copy Program by Brian Lai!\n");
+    printf("Enter the name of the file to copy from:\n");
+    scanf("%s", filename);
+    
 
     return 0;
 }

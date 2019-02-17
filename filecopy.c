@@ -12,15 +12,24 @@
 #define BUFF_MAX 21
 // ABOVE VALUE CANNOT BE CHANGED //
 
-
+#define NAME "Brian Lai"
 
 int main(int argc, char const *argv[]) {
-    char filename[128];
+    char inputFile[128];
+    char outputFile[128];
+    int bytesCopied;
 
-    printf("Welcome to the File Copy Program by Brian Lai!\n");
+    printf("Welcome to the File Copy Program by %s\n", NAME);
     printf("Enter the name of the file to copy from:\n");
-    scanf("%s", filename);
-    
+    scanf("%s", inputFile);
+    printf("Enter the name of the file to copy to:\n");
+    scanf("%s", outputFile);
+
+    open(inputFile);
+    bytesCopied = read(inputFile);
+    write(outputFile);
+
+    printf("File Copy Successful, %d bytes copied", bytesCopied);
 
     return 0;
 }

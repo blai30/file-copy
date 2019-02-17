@@ -25,9 +25,10 @@ int main(int argc, char const *argv[]) {
     printf("Enter the name of the file to copy to:\n");
     scanf("%s", outputFile);
 
-    open(inputFile);
-    bytesCopied = read(inputFile);
-    write(outputFile);
+    open(inputFile, 0);
+    bytesCopied = read(0, inputFile, BUFF_MAX);
+    write(1, BUFF_MAX, bytesCopied);
+    open(outputFile, 1);
 
     printf("File Copy Successful, %d bytes copied", bytesCopied);
 

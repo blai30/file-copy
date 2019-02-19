@@ -55,7 +55,7 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    output_file = open(output_filename, O_CREAT, O_WRONLY, S_IWRITE);
+    output_file = open(output_filename, O_WRONLY | O_CREAT, S_IWUSR);
     if (0 > output_file) {
         printf("open for write of %s failed\n", output_filename);
         close(input_file);

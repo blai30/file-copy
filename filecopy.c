@@ -18,6 +18,7 @@ int main(int argc, char const *argv[]) {
     int input_file, output_file;
     char input_filename[128], output_filename[128];
     char buffer[BUFF_MAX];
+    ssize_t total_bytes_copied = 0;
 
     printf("Welcome to the File Copy Program by %s\n", NAME);
     printf("Enter the name of the file to copy from:\n");
@@ -25,21 +26,22 @@ int main(int argc, char const *argv[]) {
     printf("Enter the name of the file to copy to:\n");
     scanf("%s", output_filename);
 
+    // Open source file for read only
     input_file = open(input_filename, O_RDONLY);
     if (input_file < 0) {
-        printf("open for read of %s failed\n", input_filename);
+        printf("Open for read failed: %s\n", input_filename);
         exit(EXIT_FAILURE);
     }
 
     // Write only | create if file does not exist | overwrite if file exists
     output_file = open(output_filename, O_WRONLY | O_CREAT | O_TRUNC, S_IWUSR);
     if (output_file < 0) {
-        printf("open for write of %s failed\n", output_filename);
+        printf("Open for write failed: %s\n", output_filename);
         close(input_file);
         exit(EXIT_FAILURE);
     }
 
-    ssize_t total_bytes_copied;
+    // Copy contents with buffer limit of BUFF_MAX until entire file is copied
     for (;;) {
         ssize_t bytes_read = read(input_file, buffer, BUFF_MAX);
         if (bytes_read <= 0) {
@@ -48,15 +50,18 @@ int main(int argc, char const *argv[]) {
 
         ssize_t bytes_written = write(output_file, buffer, bytes_read);
         if (bytes_written != bytes_read) {
-            printf("bytes_written != bytes_read");
+            printf("bytes_written != bytes_read failed");
+            printf("bytes_read: %d", bytes_read);
+            printf("bytes_written: %d", bytes_written);
             close(input_file);
             close(output_file);
             exit(EXIT_FAILURE);
         }
+
+        total_bytes_copied += bytes_written;
     }
 
-    printf("files open correct\n");
-    printf("bytes copied: %d", total_bytes_copied);
+    printf("File Copy Successful, %d bytes copied", total_bytes_copied);
 
     close(input_file);
     close(output_file);

@@ -32,11 +32,9 @@
 // }
 
 int main(int argc, char const *argv[]) {
-    int input_file, output_file;
+    int input_file, output_file, read_file;
     char input_filename[128], output_filename[128];
-    char content[BUFF_MAX];
-    size_t bytes_copied;
-    int bytes_written;
+    char buffer[BUFF_MAX];
 
     printf("Welcome to the File Copy Program by %s\n", NAME);
     printf("Enter the name of the file to copy from:\n");
@@ -50,19 +48,26 @@ int main(int argc, char const *argv[]) {
     // printf("File Copy Successful, %d bytes copied\n", bytes_written);
 
     input_file = open(input_filename, O_RDONLY);
-    if (0 > input_file) {
+    if (input_file < 0) {
         printf("open for read of %s failed\n", input_filename);
         exit(EXIT_FAILURE);
     }
 
     output_file = open(output_filename, O_WRONLY | O_CREAT, S_IWUSR);
-    if (0 > output_file) {
+    if (output_file < 0) {
         printf("open for write of %s failed\n", output_filename);
         close(input_file);
         exit(EXIT_FAILURE);
     }
 
+    while ()
+    read_file = read(input_file, buffer, sizeof(buffer));
+    write(output_file, buffer, read_file);
+
     printf("files open correct\n");
 
+    close(input_file);
+    close(output_file);
+    
     return 0;
 }

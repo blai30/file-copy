@@ -9,7 +9,7 @@
 ```
 gcc filecopy.c [filename]
 ```
-or if `make` is configured with MinGW or Cygwin
+or if `make` is configured in %PATH% with MinGW or Cygwin
 ```
 make
 ```

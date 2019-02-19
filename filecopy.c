@@ -14,25 +14,8 @@
 
 #define NAME "Brian Lai"
 
-// int copyBuffer(int fileIn, int fileOut, void* buffer, size_t bufferSize) {
-//     for (;;) {
-//         void *pos;
-
-//         ssize_t bytesToWrite = read(fileIn, buffer, bufferSize);
-        
-//         pos = buffer;
-//         while (bytesToWrite > 0) {
-//             ssize_t bytesWritten = write(fileOut, pos, bytesToWrite);
-//             bytesToWrite -= bytesWritten;
-//             pos += bytesWritten;
-//         }
-//     }
-    
-//     return 0;
-// }
-
 int main(int argc, char const *argv[]) {
-    int input_file, output_file, read_file;
+    int input_file, output_file;
     char input_filename[128], output_filename[128];
     char buffer[BUFF_MAX];
 
@@ -42,29 +25,38 @@ int main(int argc, char const *argv[]) {
     printf("Enter the name of the file to copy to:\n");
     scanf("%s", output_filename);
 
-    // input_file = open(input_filename, 0);
-    // output_file = open(output_filename, 1);
-
-    // printf("File Copy Successful, %d bytes copied\n", bytes_written);
-
     input_file = open(input_filename, O_RDONLY);
     if (input_file < 0) {
         printf("open for read of %s failed\n", input_filename);
         exit(EXIT_FAILURE);
     }
 
-    output_file = open(output_filename, O_WRONLY | O_CREAT, S_IWUSR);
+    // Write only | create if file does not exist | overwrite if file exists
+    output_file = open(output_filename, O_WRONLY | O_CREAT | O_TRUNC, S_IWUSR);
     if (output_file < 0) {
         printf("open for write of %s failed\n", output_filename);
         close(input_file);
         exit(EXIT_FAILURE);
     }
 
-    while ()
-    read_file = read(input_file, buffer, sizeof(buffer));
-    write(output_file, buffer, read_file);
+    ssize_t total_bytes_copied;
+    for (;;) {
+        ssize_t bytes_read = read(input_file, buffer, BUFF_MAX);
+        if (bytes_read <= 0) {
+            break;
+        }
+
+        ssize_t bytes_written = write(output_file, buffer, bytes_read);
+        if (bytes_written != bytes_read) {
+            printf("bytes_written != bytes_read");
+            close(input_file);
+            close(output_file);
+            exit(EXIT_FAILURE);
+        }
+    }
 
     printf("files open correct\n");
+    printf("bytes copied: %d", total_bytes_copied);
 
     close(input_file);
     close(output_file);

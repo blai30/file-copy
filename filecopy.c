@@ -50,9 +50,9 @@ int main(int argc, char const *argv[]) {
 
         ssize_t bytes_written = write(output_file, buffer, bytes_read);
         if (bytes_written != bytes_read) {
-            printf("bytes_written != bytes_read failed");
-            printf("bytes_read: %zd", bytes_read);
-            printf("bytes_written: %zd", bytes_written);
+            printf("bytes_written != bytes_read failed\n");
+            printf("bytes_read: %zd\n", bytes_read);
+            printf("bytes_written: %zd\n", bytes_written);
             close(input_file);
             close(output_file);
             exit(EXIT_FAILURE);
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[]) {
         total_bytes_copied += bytes_written;
     }
 
-    printf("File Copy Successful, %zd bytes copied", total_bytes_copied);
+    printf("File Copy Successful, %zd bytes copied\n", total_bytes_copied);
 
     close(input_file);
     close(output_file);

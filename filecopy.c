@@ -14,40 +14,55 @@
 
 #define NAME "Brian Lai"
 
-int copyBuffer(int fileIn, int fileOut, void* buffer, size_t bufferSize) {
-    for (;;) {
-        void *pos;
+// int copyBuffer(int fileIn, int fileOut, void* buffer, size_t bufferSize) {
+//     for (;;) {
+//         void *pos;
 
-        ssize_t bytesToWrite = read(fileIn, buffer, bufferSize);
+//         ssize_t bytesToWrite = read(fileIn, buffer, bufferSize);
         
-        pos = buffer;
-        while (bytesToWrite > 0) {
-            ssize_t bytesWritten = write(fileOut, pos, bytesToWrite);
-            bytesToWrite -= bytesWritten;
-            pos += bytesWritten;
-        }
-    }
+//         pos = buffer;
+//         while (bytesToWrite > 0) {
+//             ssize_t bytesWritten = write(fileOut, pos, bytesToWrite);
+//             bytesToWrite -= bytesWritten;
+//             pos += bytesWritten;
+//         }
+//     }
     
-    return 0;
-}
+//     return 0;
+// }
 
 int main(int argc, char const *argv[]) {
-    int inputFile, outputFile;
-    char inputFilename[128];
-    char outputFilename[128];
-    size_t bytesCopied;
-    int bytesWritten;
+    int input_file, output_file;
+    char input_filename[128], output_filename[128];
+    char content[BUFF_MAX];
+    size_t bytes_copied;
+    int bytes_written;
 
     printf("Welcome to the File Copy Program by %s\n", NAME);
     printf("Enter the name of the file to copy from:\n");
-    scanf("%s", inputFilename);
+    scanf("%s", input_filename);
     printf("Enter the name of the file to copy to:\n");
-    scanf("%s", outputFilename);
+    scanf("%s", output_filename);
 
-    inputFile = open(inputFilename, 0);
-    outputFile = open(outputFilename, 1);
+    // input_file = open(input_filename, 0);
+    // output_file = open(output_filename, 1);
 
-    printf("File Copy Successful, %d bytes copied\n", bytesWritten);
+    // printf("File Copy Successful, %d bytes copied\n", bytes_written);
+
+    input_file = open(input_filename, O_RDONLY);
+    if (0 > input_file) {
+        printf("open for read of %s failed\n", input_filename);
+        exit(EXIT_FAILURE);
+    }
+
+    output_file = open(output_filename, O_CREAT, O_WRONLY, S_IWRITE);
+    if (0 > output_file) {
+        printf("open for write of %s failed\n", output_filename);
+        close(input_file);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("files open correct\n");
 
     return 0;
 }

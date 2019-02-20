@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    // Write only | create if file does not exist | overwrite if file exists
+    // Overwrite if file exists | Create if file does not exist | Write only
     output_file = open(output_filename, O_TRUNC | O_CREAT | O_WRONLY, S_IWUSR);
     if (output_file < 0) {
         printf("Open for write failed: %s\n", output_filename);

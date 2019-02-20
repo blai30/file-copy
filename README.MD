@@ -24,6 +24,10 @@ make
 make
 ```
 
+## What the program does
+This program copies one file to another, overwriting the file if it already exists or creating a new file if it does not exist.
+Specify the filename of a source file in the current directory to copy and specify the filename of a destination file to copy to. The destination file does not have to already exist and file extensions do not need to be maintained.
+
 ## Run Instructions
 ### Windows
 If no filename was given

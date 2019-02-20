@@ -18,9 +18,6 @@ int main(int argc, char const *argv[]) {
     int input_file, output_file;
     char input_filename[128], output_filename[128];
     char buffer[BUFF_MAX];
-    
-    ssize_t total_bytes_copied = 0;
-    struct stat st;
 
     printf("Welcome to the File Copy Program by %s\n", NAME);
     printf("Enter the name of the file to copy from:\n");
@@ -34,7 +31,6 @@ int main(int argc, char const *argv[]) {
         printf("Open for read failed: %s\n", input_filename);
         exit(EXIT_FAILURE);
     }
-    stat(input_filename, &st);
 
     // Write only | create if file does not exist | overwrite if file exists
     output_file = open(output_filename, O_TRUNC | O_CREAT | O_WRONLY, S_IWUSR);
@@ -43,9 +39,14 @@ int main(int argc, char const *argv[]) {
         close(input_file);
         exit(EXIT_FAILURE);
     }
+
+    // Copy permissions
+    struct stat st;
+    stat(input_filename, &st);
     chmod(output_filename, st.st_mode);
 
     // Copy contents with buffer limit of BUFF_MAX until entire file is copied
+    ssize_t total_bytes_copied = 0;
     for (;;) {
         ssize_t bytes_read = read(input_file, buffer, BUFF_MAX);
         if (bytes_read <= 0) {
